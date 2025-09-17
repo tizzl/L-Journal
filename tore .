@@ -1,0 +1,32 @@
+[33mcommit 1c74a6f1927fbd1e74d0f2f7410e7d5a6eb20a86[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32m1.version[m[33m)[m
+Author: tizzl <timohahn831@gmail.com>
+Date:   Wed Sep 17 13:52:43 2025 +0200
+
+    OwnCookieVersion
+
+.gitattributes
+.gitignore
+.mvn/wrapper/maven-wrapper.properties
+mvnw
+mvnw.cmd
+pom.xml
+src/main/java/CourseRepository.java
+src/main/java/com/timo/Learning_Journal/Course.java
+src/main/java/com/timo/Learning_Journal/Entry.java
+src/main/java/com/timo/Learning_Journal/EntryRepository.java
+src/main/java/com/timo/Learning_Journal/LearningJournalApplication.java
+src/main/java/com/timo/Learning_Journal/LightningTalk.java
+src/main/java/com/timo/Learning_Journal/MainController.java
+src/main/java/com/timo/Learning_Journal/Person.java
+src/main/java/com/timo/Learning_Journal/PersonRepository.java
+src/main/java/com/timo/Learning_Journal/Role.java
+src/main/java/com/timo/Learning_Journal/SecurityConfig.java
+src/main/java/com/timo/Learning_Journal/Session.java
+src/main/java/com/timo/Learning_Journal/SessionRepository.java
+src/main/resources/application.properties
+src/main/resources/templates/entrylist.html
+src/main/resources/templates/home.html
+src/main/resources/templates/login.html
+src/main/resources/templates/register.html
+src/main/resources/templates/view-entry.html
+src/test/java/com/timo/Learning_Journal/LearningJournalApplicationTests.java
