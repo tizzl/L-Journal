@@ -5,11 +5,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.beans.factory.annotation.Autowired;
+
 
 import java.time.LocalDate;
 import java.util.List;
@@ -103,8 +102,6 @@ public class MainController {
                             @RequestParam(name = "email", required = true) String formemail,
                             @RequestParam(name = "password", required = true) String formpassword, @RequestParam(required = false) String adminCode, HttpServletResponse response) {
 
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String hashedPassword = passwordEncoder.encode(formpassword);
 
         Person person = new Person();
         person.setName(formname);
