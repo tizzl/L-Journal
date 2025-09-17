@@ -28,9 +28,6 @@ public class MainController {
     @Autowired
     private SessionRepository sessionRepository;
 
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
-
     @GetMapping("/")
     public String index(Model model, @CookieValue(value = "session-id", defaultValue = "0")String cookieSessionID) {
         if ("0".equals(cookieSessionID)) {
