@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Registrierung</title>
+</head>
+<body>
+<h1>Herzlich Willkommen bei der Learning-Journal-App</h1>
+<p>Geben Sie Ihre Nutzerdaten ein</p>
+<form method="post" action="/new-person">
+    <div>
+        <label for="name">Geben Sie Ihren Namen ein:</label>
+        <input type="text" name="name" id="name" required>
+    </div>
+    <div>
+        <label for="email">Geben Sie Ihre E-Mail ein:</label>
+        <input type="email" name="email" id="email" required>
+    </div>
+
+    <div>
+        <label for="password">Geben Sie ein Passwort ein:</label>
+        <input type="password" name="password" id="password" required>
+
+    </div>
+    <div>
+        <label for="password">Geben Sie ein Passwort ein:</label>
+        <input type="password" id="password2" required>
+    </div>
+    <div>
+        <label for="adminCode">(Optional) Admin-Code:</label>
+        <input type="password" name="password" id="adminCode" placeholder="Admin-Code (optional)">
+    </div>
+
+    <input type="submit" value="Registrieren" id="registerBtn">
+</form>
+
+<script>
+    const password = document.getElementById("password");
+    const password2 = document.getElementById("password2");
+    const registerBtn = document.getElementById("registerBtn");
+
+    function checkPasswords() {
+        if (password.value && password.value === password2.value) {
+            registerBtn.disabled = false; // Passwörter stimmen überein
+        } else {
+            registerBtn.disabled = true;  // sonst deaktivieren
+        }
+    }
+
+    // Event Listener für beide Eingabefelder
+    password.addEventListener("input", checkPasswords);
+    password2.addEventListener("input", checkPasswords);
+</script>
+
+
+</body>
+</html>

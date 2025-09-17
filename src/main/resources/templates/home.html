@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymleaf.org" lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Learning-Journal</title>
+</head>
+<body>
+<h1>Willkommen im Learning Journal, <span th:text="${person.name}"></span>!</h1>
+<p>Wähle eine Aktion...:</p>
+
+
+<form method="post" action="/new-entry">
+    <div>
+        <label for="title">Titel:</label>
+        <input type="text" name="title" id="title">
+    </div>
+    <div>
+        <label for="body">Geben Sie Lernerfahrungen ein:</label>
+        <textarea name="body" rows="20" cols="80" id="body"></textarea>
+    </div>
+
+    <input type="submit" value="Anlegen">
+</form>
+<p><a href="/entries">Bisherige Einträge anzeigen</a></p>
+</body>
+</html>
