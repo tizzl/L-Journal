@@ -26,12 +26,13 @@ private SessionRepository sessionRepository;
         sessionRepository.save(session);
         return session;
     }
-    public void endCookieSession(Session session){
+    public Cookie endCookieSession(Session session){
 
         sessionRepository.deleteById(session.getId());
         Cookie cookie = new Cookie("session-id", null);
         cookie.setPath("/");
         cookie.setMaxAge(0);
+        return cookie;
 
     }
 }

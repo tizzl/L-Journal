@@ -36,7 +36,7 @@ public class MainController {
     private SessionService sessionService;
 
     @GetMapping("/")
-    public String index(Model model, @CookieValue(value = "session-id", defaultValue = "0")String cookieSessionID) {
+    public String index(Model model, @CookieValue(value = "session-id", defaultValue = "0") String cookieSessionID) {
         if ("0".equals(cookieSessionID)) {
             //Kein cookie, keine Party, ergo -->/login
             return "redirect:/login";
@@ -62,9 +62,9 @@ public class MainController {
                            @RequestParam(name = "body", required = true) String formbody, HttpServletRequest request) {
 
         String cookieSessionId = null;
-        if (request.getCookies() != null){
+        if (request.getCookies() != null) {
             for (Cookie cookie : request.getCookies()) {
-                if("session-id".equals(cookie.getName())) {
+                if ("session-id".equals(cookie.getName())) {
                     cookieSessionId = cookie.getValue();
                 }
             }
@@ -73,7 +73,7 @@ public class MainController {
         if (cookieSessionId == null) {
             return "redirect:/";
         }
-        Optional<Session> sessionOpt = sessionRepository .findById(Long.parseLong(cookieSessionId));
+        Optional<Session> sessionOpt = sessionRepository.findById(Long.parseLong(cookieSessionId));
         if (sessionOpt.isEmpty()) {
             return "redirect:/login";
         }
@@ -118,11 +118,11 @@ public class MainController {
         person.setPassword(hashedPassword);
 
         //Enum zuweisen
-        if(this.adminCode.equals(adminCode)) {
+        if (this.adminCode.equals(adminCode)) {
 
             person.setRole(Role.ADMIN);
 
-        }else  {
+        } else {
             person.setRole(Role.USER);
         }
         personRepository.save(person);
@@ -139,6 +139,7 @@ public class MainController {
         response.addCookie(cookie);
         return "redirect:/";
     }
+
     @GetMapping("/login")
     public String showLogin(Model model) {
         return "login";
@@ -156,7 +157,7 @@ public class MainController {
             Session session = sessionService.createSession(person);
 
             //Cookie setzen
-           Cookie cookie = sessionService.createCookieSession(session);
+            Cookie cookie = sessionService.createCookieSession(session);
             response.addCookie(cookie);
 
             return "redirect:/";
@@ -165,6 +166,7 @@ public class MainController {
             return "redirect:/login?error";
         }
     }
+
     @GetMapping("/person/{id}")
     public String viewPerson(@PathVariable Long id, Model model) {
         // Person aus der DB holen
@@ -178,4 +180,18 @@ public class MainController {
         return "person"; // person.html muss existieren
     }
 
+    @GetMapping("/logout")
+
+    public String logout(Model model, @CookieValue(value = "session-id", defaultValue = "0") String cookieSessionID, HttpServletResponse response) {
+
+        if ("0".equals(cookieSessionID)) {
+            //Kein cookie, keine Party, ergo -->/login
+        } else {
+            sessionRepository.findById(Long.parseLong(cookieSessionID)).ifPresent(session -> {
+                Cookie cookie = sessionService.endCookieSession(session);
+                response.addCookie(cookie);
+            });
+        }
+        return "redirect:/login";
+    }
 }
