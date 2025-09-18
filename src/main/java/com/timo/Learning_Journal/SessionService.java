@@ -1,0 +1,37 @@
+package com.timo.Learning_Journal;
+
+import jakarta.servlet.http.Cookie;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+
+
+public class SessionService {
+@Autowired
+private SessionRepository sessionRepository;
+
+    public Cookie createCookieSession(Session session) {
+
+        Cookie cookie = new Cookie("session-id", Long.toString(session.getId()));
+        cookie.setPath("/");
+        cookie.setMaxAge(3600);
+        cookie.setSecure(true);
+        cookie.setHttpOnly(true);
+        return cookie;
+    }
+    public Session createSession(Person person){
+        Session session = new Session();
+        session.setPerson(person);
+        sessionRepository.save(session);
+        return session;
+    }
+    public void endCookieSession(Session session){
+
+        sessionRepository.deleteById(session.getId());
+        Cookie cookie = new Cookie("session-id", null);
+        cookie.setPath("/");
+        cookie.setMaxAge(0);
+
+    }
+}

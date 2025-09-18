@@ -3,14 +3,12 @@ package com.timo.Learning_Journal;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 
 import java.time.LocalDate;
 import java.util.List;
@@ -33,6 +31,9 @@ public class MainController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private SessionService sessionService;
 
     @GetMapping("/")
     public String index(Model model, @CookieValue(value = "session-id", defaultValue = "0")String cookieSessionID) {
@@ -134,12 +135,7 @@ public class MainController {
 
         //Cookies verteilen
 
-        Cookie cookie = new Cookie("session-id", Long.toString(session.getId()));
-        cookie.setPath("/");
-        cookie.setMaxAge(3600);
-        cookie.setHttpOnly(true);
-        cookie.setSecure(true);
-        cookie.setHttpOnly(true);
+        Cookie cookie = sessionService.createCookieSession(session);
         response.addCookie(cookie);
         return "redirect:/";
     }
@@ -157,13 +153,10 @@ public class MainController {
         if (person != null && passwordEncoder.matches(formpassword, person.getPassword())) {
 
 
-            Session session = new Session();
-            session.setPerson(person);
-            sessionRepository.save(session);
+            Session session = sessionService.createSession(person);
 
             //Cookie setzen
-            Cookie cookie = new Cookie("session-id", session.getId().toString());
-            cookie.setPath("/");
+           Cookie cookie = sessionService.createCookieSession(session);
             response.addCookie(cookie);
 
             return "redirect:/";
