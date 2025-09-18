@@ -5,6 +5,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +19,8 @@ import java.util.Optional;
 @Controller
 public class MainController {
 
+    @Value("${adminCode}")
+    private String adminCode;
 
     @Autowired
     private EntryRepository entryRepository;
@@ -26,6 +30,9 @@ public class MainController {
 
     @Autowired
     private SessionRepository sessionRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @GetMapping("/")
     public String index(Model model, @CookieValue(value = "session-id", defaultValue = "0")String cookieSessionID) {
@@ -102,15 +109,18 @@ public class MainController {
                             @RequestParam(name = "email", required = true) String formemail,
                             @RequestParam(name = "password", required = true) String formpassword, @RequestParam(required = false) String adminCode, HttpServletResponse response) {
 
+        String hashedPassword = passwordEncoder.encode(formpassword);
 
         Person person = new Person();
         person.setName(formname);
         person.setEmail(formemail);
-        person.setPassword(formpassword);
+        person.setPassword(hashedPassword);
 
         //Enum zuweisen
-        if(adminCode != null &&"JimEuAs060924".equals(adminCode)) {
+        if(this.adminCode.equals(adminCode)) {
+
             person.setRole(Role.ADMIN);
+
         }else  {
             person.setRole(Role.USER);
         }
@@ -142,9 +152,9 @@ public class MainController {
     public String login(Model model, @RequestParam(name = "email", required = true) String formemail,
                         @RequestParam(name = "password", required = true) String formpassword, HttpServletResponse response) {
 
-
         Person person = personRepository.findByEmail(formemail);
-        if (person != null && person.getPassword().equals(formpassword)) {
+
+        if (person != null && passwordEncoder.matches(formpassword, person.getPassword())) {
 
 
             Session session = new Session();
