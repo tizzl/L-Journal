@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Registrierung</title>
+    <link rel="icon" th:href="@{/img/favicon.ico}"/>
 </head>
 <body>
 <h1>Herzlich Willkommen bei der Learning-Journal-App</h1>
@@ -47,9 +48,29 @@
         }
     }
 
+    const email = document.getElementById("email");
+
+    function checkMail() {
+        const emailValue = email.value;
+        const emailPattern = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*$/;
+
+
+        if (!emailPattern.test(emailValue)) {
+            email.style.borderColor = "red";
+            email.setCustomValidity("Ungültige E-Mail-Adresse");
+            console.log("Email Adresse ungültig: " + email.value);
+        } else {
+            email.style.borderColor = "";
+            email.setCustomValidity(""); // Validität zurücksetzen
+            console.log("Email Adresse gültig: " + email.value);
+        }
+
+    }
+
     // Event Listener für beide Eingabefelder
     password.addEventListener("input", checkPasswords);
     password2.addEventListener("input", checkPasswords);
+    email.addEventListener("input", checkMail);
 </script>
 
 
