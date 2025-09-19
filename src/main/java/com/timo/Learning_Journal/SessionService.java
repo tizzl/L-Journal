@@ -8,8 +8,9 @@ import org.springframework.stereotype.Service;
 
 
 public class SessionService {
-@Autowired
-private SessionRepository sessionRepository;
+
+    @Autowired
+    private SessionRepository sessionRepository;
 
     public Cookie createCookieSession(Session session) {
 
@@ -20,13 +21,15 @@ private SessionRepository sessionRepository;
         cookie.setHttpOnly(true);
         return cookie;
     }
-    public Session createSession(Person person){
+
+    public Session createSession(Person person) {
         Session session = new Session();
         session.setPerson(person);
         sessionRepository.save(session);
         return session;
     }
-    public Cookie endCookieSession(Session session){
+
+    public Cookie endCookieSession(Session session) {
 
         sessionRepository.deleteById(session.getId());
         Cookie cookie = new Cookie("session-id", null);

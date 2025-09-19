@@ -20,11 +20,6 @@ public class MainController {
     @Value("${adminCode}")
     private String adminCode;
 
-    @Autowired
-    private EntryRepository entryRepository;
-
-    @Autowired
-    private PersonRepository personRepository;
 
     @Autowired
     private SessionRepository sessionRepository;
@@ -33,7 +28,13 @@ public class MainController {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
+    private PersonService personService;
+
+    @Autowired
     private SessionService sessionService;
+
+    @Autowired
+    private EntryService entryService;
 
     @GetMapping("/")
     public String index(Model model, @CookieValue(value = "session-id", defaultValue = "0") String cookieSessionID) {
@@ -50,7 +51,7 @@ public class MainController {
     @GetMapping("/entry/{id}")
 
     public String viewEntry(Model model, @PathVariable Long id) {
-        Entry entry = entryRepository.findById(id).get();
+        Entry entry = entryService.findById(id).get();
         model.addAttribute("title", entry.getTitle());
         model.addAttribute("body", entry.getBody());
         return "view-entry";
@@ -88,14 +89,14 @@ public class MainController {
         entry.setBody(formbody);
         entry.setAuthor(person);
         entry.setDate(LocalDate.now());
-        entryRepository.save(entry);
+        entryService.save(entry);
         return "redirect:/";
 
     }
 
     @GetMapping("/entries")
     public String viewEntries(Model model) {
-        List<Entry> entries = entryRepository.findAll();
+        List<Entry> entries = entryService.findAll();
         model.addAttribute("entries", entries);
         return "entrylist";
     }
@@ -125,7 +126,7 @@ public class MainController {
         } else {
             person.setRole(Role.USER);
         }
-        personRepository.save(person);
+        personService.save(person);
 
         //Session für Newbies anlegen
 
@@ -149,7 +150,7 @@ public class MainController {
     public String login(Model model, @RequestParam(name = "email", required = true) String formemail,
                         @RequestParam(name = "password", required = true) String formpassword, HttpServletResponse response) {
 
-        Person person = personRepository.findByEmail(formemail);
+        Person person = personService.findByEmail(formemail);
 
         if (person != null && passwordEncoder.matches(formpassword, person.getPassword())) {
 
@@ -170,7 +171,7 @@ public class MainController {
     @GetMapping("/person/{id}")
     public String viewPerson(@PathVariable Long id, Model model) {
         // Person aus der DB holen
-        Person person = personRepository.findById(id).orElse(null);
+        Person person = personService.findById(id).orElse(null);
 
         if (person == null) {
             return "redirect:/entries"; // fallback, falls Person nicht existiert
