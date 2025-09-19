@@ -1,4 +1,4 @@
-package com.timo.Learning_Journal;
+package com.timo.Learning_Journal.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

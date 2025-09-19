@@ -1,5 +1,7 @@
-package com.timo.Learning_Journal;
+package com.timo.Learning_Journal.repositories;
 
+import com.timo.Learning_Journal.entity.Person;
+import com.timo.Learning_Journal.entity.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

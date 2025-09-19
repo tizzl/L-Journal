@@ -1,5 +1,8 @@
-package com.timo.Learning_Journal;
+package com.timo.Learning_Journal.service;
 
+import com.timo.Learning_Journal.entity.Person;
+import com.timo.Learning_Journal.entity.Session;
+import com.timo.Learning_Journal.repositories.SessionRepository;
 import jakarta.servlet.http.Cookie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

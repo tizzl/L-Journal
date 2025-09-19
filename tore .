@@ -10,7 +10,7 @@ Date:   Wed Sep 17 13:52:43 2025 +0200
 mvnw
 mvnw.cmd
 pom.xml
-src/main/java/CourseRepository.java
+src/main/java/com.timo.Learning_Journal.repositories.CourseRepository.java
 src/main/java/com/timo/Learning_Journal/Course.java
 src/main/java/com/timo/Learning_Journal/Entry.java
 src/main/java/com/timo/Learning_Journal/EntryRepository.java

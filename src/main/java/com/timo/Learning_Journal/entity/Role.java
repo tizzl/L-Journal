@@ -1,4 +1,4 @@
-package com.timo.Learning_Journal;
+package com.timo.Learning_Journal.entity;
 
 public enum Role{
     USER,

@@ -1,5 +1,9 @@
 package com.timo.Learning_Journal;
 
+import com.timo.Learning_Journal.entity.Entry;
+import com.timo.Learning_Journal.entity.Person;
+import com.timo.Learning_Journal.repositories.EntryRepository;
+import com.timo.Learning_Journal.repositories.PersonRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
