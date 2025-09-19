@@ -4,6 +4,8 @@ import jakarta.servlet.http.Cookie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 
 
@@ -37,5 +39,13 @@ public class SessionService {
         cookie.setMaxAge(0);
         return cookie;
 
+    }
+
+    public Optional<Session> findById(long id) {
+        return sessionRepository.findById(id);
+    }
+
+    public Session save(Session session) {
+        return sessionRepository.save(session);
     }
 }

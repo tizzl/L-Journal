@@ -20,10 +20,6 @@ public class MainController {
     @Value("${adminCode}")
     private String adminCode;
 
-
-    @Autowired
-    private SessionRepository sessionRepository;
-
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -42,7 +38,7 @@ public class MainController {
             //Kein cookie, keine Party, ergo -->/login
             return "redirect:/login";
         }
-        return sessionRepository.findById(Long.parseLong(cookieSessionID)).map(session -> {
+        return sessionService.findById(Long.parseLong(cookieSessionID)).map(session -> {
             model.addAttribute("person", session.getPerson());
             return "home";
         }).orElse("redirect:/login");
@@ -74,7 +70,7 @@ public class MainController {
         if (cookieSessionId == null) {
             return "redirect:/";
         }
-        Optional<Session> sessionOpt = sessionRepository.findById(Long.parseLong(cookieSessionId));
+        Optional<Session> sessionOpt = sessionService.findById(Long.parseLong(cookieSessionId));
         if (sessionOpt.isEmpty()) {
             return "redirect:/login";
         }
@@ -132,7 +128,7 @@ public class MainController {
 
         Session session = new Session();
         session.setPerson(person);
-        sessionRepository.save(session);
+        sessionService.save(session);
 
         //Cookies verteilen
 
@@ -188,7 +184,7 @@ public class MainController {
         if ("0".equals(cookieSessionID)) {
             //Kein cookie, keine Party, ergo -->/login
         } else {
-            sessionRepository.findById(Long.parseLong(cookieSessionID)).ifPresent(session -> {
+            sessionService.findById(Long.parseLong(cookieSessionID)).ifPresent(session -> {
                 Cookie cookie = sessionService.endCookieSession(session);
                 response.addCookie(cookie);
             });
