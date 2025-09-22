@@ -8,6 +8,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
 public class LearningJournalApplication {
@@ -17,19 +18,11 @@ public class LearningJournalApplication {
     }
 
     @Bean
-    public CommandLineRunner commandLineRunner(PersonRepository personRepository) {
+    public CommandLineRunner commandLineRunner(PersonRepository personRepository, PasswordEncoder passwordEncoder) {
         return (args) -> {
             System.out.println("Halo");
-            personRepository.save(Person.builder().email("a@b.de").password("c").name("Timo").build());
+            personRepository.save(Person.builder().email("a@b.de").password(passwordEncoder.encode("c")).name("Timo").build());
 
-        };
-    }
-    @Bean
-    public CommandLineRunner commandLineRunner2(EntryRepository entryRepository) {
-        return (args) -> {
-            System.out.println("Halo2");
-
-            entryRepository.save(Entry.builder().title("test").body("What the heck").build());
         };
     }
 }
