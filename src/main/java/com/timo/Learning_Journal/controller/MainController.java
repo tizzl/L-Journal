@@ -124,10 +124,10 @@ public class MainController {
         //Enum zuweisen
         if (this.adminCode.equals(adminCode)) {
 
-            person.setRole(Role.ADMIN);
+            person.setRole(Role.TEACHER);
 
         } else {
-            person.setRole(Role.USER);
+            person.setRole(Role.STUDENT);
         }
         personService.save(person);
 

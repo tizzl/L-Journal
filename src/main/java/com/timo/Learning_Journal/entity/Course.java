@@ -3,6 +3,7 @@ package com.timo.Learning_Journal.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -20,7 +21,10 @@ public class Course {
 
     private String courseName;
 
+    @ManyToOne
+    private Person teacher; //Teacher/Admin
+
     @ManyToMany(mappedBy = "courses")
-    private Set<Person> persons;
+    private Set<Person> students = new HashSet<>();
 
 }
