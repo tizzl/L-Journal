@@ -12,6 +12,7 @@
     <div>
         <label for="name">Geben Sie Ihren Namen ein:</label>
         <input type="text" name="name" id="name" required>
+        <span id="email-error" style="color: #b8383b; display: block;"></span>
     </div>
     <div>
         <label for="email">Geben Sie Ihre E-Mail ein:</label>
@@ -41,11 +42,7 @@
     const registerBtn = document.getElementById("registerBtn");
 
     function checkPasswords() {
-        if (password.value && password.value === password2.value) {
-            registerBtn.disabled = false; // Passwörter stimmen überein
-        } else {
-            registerBtn.disabled = true;  // sonst deaktivieren
-        }
+        registerBtn.disabled = !(password.value && password.value === password2.value);
     }
 
     const email = document.getElementById("email");
@@ -53,15 +50,17 @@
     function checkMail() {
         const emailValue = email.value;
         const emailPattern = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*$/;
-
+        const errorSpan = document.getElementById("email-error");
 
         if (!emailPattern.test(emailValue)) {
             email.style.borderColor = "red";
-            email.setCustomValidity("Ungültige E-Mail-Adresse");
-            console.log("Email Adresse ungültig: " + email.value);
+            errorSpan.textContent = "Ungültige E-Mail!";
+            email.setCustomValidity("Ungültige E-Mail-Adresse!")
+            console.log("Email Adresse ungültig : " + email.value);
         } else {
             email.style.borderColor = "";
-            email.setCustomValidity(""); // Validität zurücksetzen
+            errorSpan.textContent = "";
+            email.setCustomValidity("");
             console.log("Email Adresse gültig: " + email.value);
         }
 

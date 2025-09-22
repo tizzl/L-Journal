@@ -1,16 +1,16 @@
 package com.timo.Learning_Journal.controller;
-import com.timo.Learning_Journal.service.PersonService;
+
 import com.timo.Learning_Journal.service.SessionService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
+@RequiredArgsConstructor
 public class MainController {
 
-    @Autowired
-    private SessionService sessionService;
+    private final SessionService sessionService;
 
     @GetMapping("/")
     public String index(Model model, @CookieValue(value = "session-id", defaultValue = "0") String cookieSessionID) {

@@ -3,16 +3,16 @@ package com.timo.Learning_Journal.controller;
 
 import com.timo.Learning_Journal.entity.Person;
 import com.timo.Learning_Journal.service.PersonService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
+@RequiredArgsConstructor
 public class PersonController {
-    @Autowired
-    private PersonService personService;
+    private final PersonService personService;
 
     @GetMapping("/person/{id}")
     public String viewPerson(@PathVariable Long id, Model model) {

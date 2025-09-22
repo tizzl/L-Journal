@@ -7,7 +7,7 @@ import com.timo.Learning_Journal.service.PersonService;
 import com.timo.Learning_Journal.service.SessionService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -18,19 +18,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
+@RequiredArgsConstructor
 public class AuthController {
 
     @Value("${adminCode}")
     private String adminCode;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private PersonService personService;
-
-    @Autowired
-    private SessionService sessionService;
+    private final PasswordEncoder passwordEncoder;
+    private final PersonService personService;
+    private final SessionService sessionService;
 
     @GetMapping("/register")
     public String showRegistration(Model model) {
@@ -39,8 +35,8 @@ public class AuthController {
 
     @PostMapping("/new-person")
     public String newPerson(Model model, @RequestParam(name = "name", required = true) String formname,
-                            @RequestParam(name = "email", required = true) String formemail,
-                            @RequestParam(name = "password", required = true) String formpassword, @RequestParam(required = false) String adminCode, HttpServletResponse response) {
+                            @RequestParam(name = "email") String formemail,
+                            @RequestParam(name = "password") String formpassword, @RequestParam(required = false) String adminCode, HttpServletResponse response) {
 
         String hashedPassword = passwordEncoder.encode(formpassword);
 

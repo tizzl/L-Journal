@@ -7,7 +7,7 @@ import com.timo.Learning_Journal.service.EntryService;
 import com.timo.Learning_Journal.service.SessionService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,15 +20,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
+@RequiredArgsConstructor
 public class EntryController {
-    @Autowired
-    private EntryService entryService;
 
-    @Autowired
-    private SessionService sessionService;
+    private final EntryService entryService;
+    private final SessionService sessionService;
 
     @GetMapping("/entry/{id}")
-
     public String viewEntry(Model model, @PathVariable Long id) {
         Entry entry = entryService.findById(id).get();
         model.addAttribute("title", entry.getTitle());
@@ -37,8 +35,8 @@ public class EntryController {
     }
 
     @PostMapping("/new-entry")
-    public String newEntry(Model model, @RequestParam(name = "title", required = true) String formtitle,
-                           @RequestParam(name = "body", required = true) String formbody, HttpServletRequest request) {
+    public String newEntry(@RequestParam(name = "title") String formtitle,
+                           @RequestParam(name = "body") String formbody, HttpServletRequest request) {
 
         String cookieSessionId = null;
         if (request.getCookies() != null) {
@@ -65,7 +63,8 @@ public class EntryController {
         entry.setAuthor(person);
         entry.setDate(LocalDate.now());
         entryService.save(entry);
-        return "redirect:/";
+        Entry savedEntry = entryService.save(entry);
+        return "redirect:/entry/" + savedEntry.getId();
     }
 
     @GetMapping("/entries")

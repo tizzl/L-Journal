@@ -4,16 +4,18 @@ import com.timo.Learning_Journal.entity.Person;
 import com.timo.Learning_Journal.entity.Session;
 import com.timo.Learning_Journal.repositories.SessionRepository;
 import jakarta.servlet.http.Cookie;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class SessionService {
 
-    @Autowired
-    private SessionRepository sessionRepository;
+
+    private final SessionRepository sessionRepository;
 
     public Cookie createCookieSession(Session session) {
 
