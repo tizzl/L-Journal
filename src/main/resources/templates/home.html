@@ -1,33 +1,34 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymleaf.org" lang="de">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" lang="de">
 <head>
     <meta charset="UTF-8">
     <title>LJA</title>
     <link rel="icon" th:href="@{/img/favicon.ico}"/>
-    <link rel="stylesheet" href="/css/style.css" />
-
-
+    <link rel="stylesheet" href="/css/style.css"/>
 
 </head>
+<script src="/js/entryForm.js"></script>
 <body>
 <div th:replace="fragments :: nav"></div>
 
 <h1>Willkommen im Learning Journal, <span th:text="${person.name}"></span>!</h1>
-<p>Wähle eine Aktion...:</p>
+<p>Erstelle einen Journal-Eintrag:</p>
 
-
-<form method="post" action="/new-entry">
+<form method="post" action="/new-entry" id="entryForm" novalidate>
     <div>
         <label for="title">Titel:</label>
         <input type="text" name="title" id="title">
+        <br><span id="title-error" style="color:red"></span></br>
     </div>
     <div>
         <label for="body">Geben Sie Lernerfahrungen ein:</label>
         <textarea name="body" rows="20" cols="80" id="body"></textarea>
+        <span id="body-error" style="color:red"></span>
     </div>
-
     <input type="submit" value="Anlegen">
 </form>
 <p><a href="/entries">Bisherige Einträge anzeigen</a></p>
+
+
 </body>
 </html>

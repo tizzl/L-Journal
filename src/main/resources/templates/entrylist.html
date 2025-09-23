@@ -16,17 +16,16 @@
         <th>Datum</th>
         <th>Titel</th>
         <th>Autor</th>
+        <th>Status</th>
     </tr>
     </thead>
     <tr th:each="entry : ${entries}">
         <td th:text="${#temporals.format(entry.date, 'dd.MMMM.yyyy')}">Datum</td>
-        <td><a th:href="|/entry/${entry.id}|"><strong th:text="${entry.title}">Title</strong></a>
-        </td>
+        <td><a th:href="|/entry/${entry.id}|"><strong th:text="${entry.title}">Title</strong></a></td>
 
-        <td>
-            <em>Autor: </em>
-            <span th:text="${entry.author}">kein Autor</span>
-        </td>
+        <td><a th:href="@{/person/{id}(id=${entry.author.id})}"
+               th:text="${entry.author.name}">kein Autor</a></td>
+        <td><span th:text="${entry.author.role}">keine Rolle</span></td>
     </tr>
 </table>
 </body>

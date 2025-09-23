@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${person}">Title</title>
+    <link rel="icon" th:href="@{/img/favicon.ico}"/>
+    <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+
+<p><strong>Name:</strong> <span th:text="${person.name}">Autorname</span></p>
+<p><strong>Rolle:</strong> <span th:text="${person.role}">Satus</span></p>
+
+<a href="/">Zurück</a>
+
+</body>
+</html>

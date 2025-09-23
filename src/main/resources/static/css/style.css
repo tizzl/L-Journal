@@ -8,7 +8,7 @@ h1 {
     padding: 20px 20px;
     border: none;
     cursor: pointer;
-    transition: background 0.5s ease;  /* sanfter Übergang */
+    transition: background 1.5s ease;  /* sanfter Übergang */
 }
 
 strong {
@@ -19,4 +19,11 @@ strong {
 p {
     font-family: sans-serif;
 }
+.my-table {
+    border: 1px solid black;
 
+}
+.my-table td, .my-table th {
+    border: 1px solid black;
+    padding: 5px;
+}

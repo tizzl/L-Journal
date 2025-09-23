@@ -1,13 +1,24 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymleaf.org" lang="de">
+<html xmlns:th="http://www.thymeleaf.org" lang="de">
 <head>
     <meta charset="UTF-8">
-    <title th:text="${title}">Title</title>
+    <title th:text="${entry.title}">Title</title>
     <link rel="icon" th:href="@{/img/favicon.ico}"/>
+    <link rel="stylesheet" href="/css/style.css" />
 </head>
 <body>
-<h1 th:text="${title}">Title</h1>
-<p th:text="${body}">Title</p>
+
+<p><strong>Autor:</strong> <span th:text="${entry.author.name}">Autorname</span></p>
+<p><strong>Rolle:</strong> <span th:text="${entry.author.role}">Satus</span></p>
+<p><strong>Datum:</strong> <span th:text="${entry.date}">Datum</span></p>
+
+<hr>
+
+<h1 th:text="${entry.title}">Title</h1>
+
+<p th:text="${entry.body}">Body</p>
+
+<a href="/">Zurück</a>
 
 </body>
 </html>

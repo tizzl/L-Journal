@@ -28,9 +28,9 @@ public class EntryController {
 
     @GetMapping("/entry/{id}")
     public String viewEntry(Model model, @PathVariable Long id) {
-        Entry entry = entryService.findById(id).get();
-        model.addAttribute("title", entry.getTitle());
-        model.addAttribute("body", entry.getBody());
+        Entry entry = entryService.findById(id)
+                        .orElseThrow(() -> new RuntimeException("Entry not found " + id));
+        model.addAttribute("entry", entry);
         return "view-entry";
     }
 
@@ -54,7 +54,7 @@ public class EntryController {
             return "redirect:/login";
         }
         Session dbSession = sessionOpt.get();
-        Person person = dbSession.getPerson(); //Autor wird angelegt, hoffentlich!
+        Person person = dbSession.getPerson(); //Autor wird angelegt!
 
         //Entry anlegen
         Entry entry = new Entry();
@@ -62,7 +62,6 @@ public class EntryController {
         entry.setBody(formbody);
         entry.setAuthor(person);
         entry.setDate(LocalDate.now());
-        entryService.save(entry);
         Entry savedEntry = entryService.save(entry);
         return "redirect:/entry/" + savedEntry.getId();
     }
