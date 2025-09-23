@@ -2,12 +2,12 @@ package com.timo.Learning_Journal.service;
 
 
 import com.timo.Learning_Journal.entity.Person;
+import com.timo.Learning_Journal.entity.Role;
 import com.timo.Learning_Journal.repositories.PersonRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -29,5 +29,9 @@ public class PersonService {
     public Optional<Person> findById(Long id) {
         return personRepository.findById(id);
 
+    }
+
+    public List<Person> findAllByRole(Role role) {
+        return personRepository.findByRole(role);
     }
 }
