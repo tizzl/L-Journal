@@ -5,6 +5,7 @@ import com.timo.Learning_Journal.entity.Person;
 import com.timo.Learning_Journal.entity.Role;
 import com.timo.Learning_Journal.repositories.CourseRepository;
 import com.timo.Learning_Journal.repositories.PersonRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,12 +13,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class CourseService {
-    @Autowired
-    private CourseRepository courseRepository;
 
-    @Autowired
-    private PersonRepository personRepository;
+    private final CourseRepository courseRepository;
+    private final PersonRepository personRepository;
 
     public Course save(Course course) {
         return courseRepository.save(course);

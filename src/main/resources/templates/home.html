@@ -28,17 +28,12 @@
     <input type="submit" value="Anlegen">
 </form>
 <p><a href="/entries">Bisherige Einträge anzeigen</a></p>
+
+<!--TEACHER zugriff auf Kurse-->
 <div th:if="${person.role.name() == 'TEACHER'}">
     <h2>Kurse verwalten</h2>
+    <li><a href="/new-course">Kurs erstellen</a></li>
 
-    <form method="post" action="/new-course" id="courseForm">
-        <div>
-            <label for="courseName">Kursname:</label>
-            <input type="text" name="courseName" id="courseName">
-            <span id="course-error" style="color:red"></span>
-        </div>
-        <input type="submit" value="Kurs anlegen">
-    </form>
 </div>
 
 

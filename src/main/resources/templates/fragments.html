@@ -1,8 +1,9 @@
-
-<nav th:fragment="nav">
+<nav th:fragment="nav" xmlns:th="http://www.thymeleaf.org">
     <ul>
-        <li><a href="/">Eintrag erstellen</a></li>
-        <li><a href="/entries">Einträge einsehen</a></li>
-        <li><a href="/logout">Ausloggen</a></li>
+        <li><a th:href="@{/}">Eintrag erstellen</a></li>
+        <li><a th:href="@{/entries}">Einträge einsehen</a></li>
+        <li><a th:href="@{/person}">Mein Profil</a></li>
+        <li><a th:href="@{/logout}">Ausloggen</a></li>
+
     </ul>
 </nav>

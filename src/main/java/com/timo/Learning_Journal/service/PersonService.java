@@ -30,8 +30,12 @@ public class PersonService {
         return personRepository.findById(id);
 
     }
+    public List<Person> findAllByIds(List<Long> ids) {
+        return personRepository.findAllById(ids);
+    }
 
     public List<Person> findAllByRole(Role role) {
         return personRepository.findByRole(role);
     }
+
 }

@@ -20,6 +20,7 @@ public class Course {
     private Long courseID;
 
     private String courseName;
+    private String courseDescription;
 
     @ManyToOne
     private Person teacher; //Teacher/Admin

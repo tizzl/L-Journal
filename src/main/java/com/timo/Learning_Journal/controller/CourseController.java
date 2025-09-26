@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
+import java.util.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -27,7 +27,7 @@ public class CourseController {
     private final CourseService courseService;
 
     @PostMapping("/new-course")
-    public String createCourse(@RequestParam String courseName, HttpServletRequest request) {
+    public String createCourse(@RequestParam(value = "students", required = false) List<Long> studentIds, @RequestParam String courseName, @RequestParam String courseDescription, HttpServletRequest request) {
 
         // Lehrer aus Session holen
         String cookieSessionId = null;
@@ -44,20 +44,25 @@ public class CourseController {
         Person teacher = session.getPerson();
         if (teacher.getRole() != Role.TEACHER) return "redirect:/";
 
+
         // Course anlegen
         Course course = new Course();
         course.setCourseName(courseName);
+        course.setCourseDescription(courseDescription);
         course.setTeacher(teacher);
         courseService.save(course);
 
-        return "redirect:/courses";
+        return "redirect:/";
     }
 
     @GetMapping("/new-course")
     public String newCourseForm(Model model) {
         // Liste aller Lehrer aus DB holen
         List<Person> teachers = personService.findAllByRole(Role.TEACHER);
+        List<Person> students = personService.findAllByRole(Role.STUDENT);
+        students.sort(Comparator.comparing(Person::getName));
         model.addAttribute("teachers", teachers);
+        model.addAttribute("students", students);
         return "new-course"; // Thymeleaf Template
     }
 }
