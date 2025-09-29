@@ -1,10 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>Kurse</title>
+    <title>LJA</title>
+    <link rel="icon" th:href="@{/img/favicon.ico}"/>
+    <link rel="stylesheet" href="/css/style.css"/>
 </head>
+
 <body>
+
 <form method="post" action="/new-course" id="courseForm">
     <div>
         <label for="courseName">Kursname:</label>
@@ -13,17 +17,10 @@
         <label for="courseDescription">Kursbeschreibung:</label>
         <input type="text" name="courseDescription" id="courseDescription">
         <span id="description-error" style="color:red"></span>
-<!--        <select-->
-<!--                    th:field="*{students}">-->
-<!--            <option th:each="student: ${students}"-->
-<!--                    th:value="${student.id}"-->
-<!--                    th:text="${student}"></option>-->
-<!--        </select>-->
-<!--        <button type="submit">Senden</button>-->
+
 
     </div>
     <input type="submit" value="Kurs anlegen">
 </form>
-
 </body>
 </html>

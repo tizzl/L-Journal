@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>LJA</title>
+    <link rel="icon" th:href="@{/img/favicon.ico}"/>
+    <link rel="stylesheet" href="/css/style.css"/>
+</head>
+<body>
+
+<form th:action="@{/edit-course/{id}(id=${course.courseID})}" method="post">
+    <label for="courseName">Kursname:</label>
+    <input type="text" name="courseName" th:value="*{course.courseName}" id="courseName">
+
+    <label for="courseDescription">Kursbeschreibung:</label>
+    <input type="text" th:field="*{course.courseDescription}" id="courseDescription">
+
+    <label for="students">Schüler auswählen:</label>
+    <select name="students" multiple id="students">
+        <option th:each="student : ${students}"
+                th:value="${student.id}"
+                th:text="${student.name}"
+                th:selected="${course.students.contains(student)}"></option>
+    </select>
+
+    <button type="submit">Speichern</button>
+</form>
+<h3>Aktuelle Schüler:</h3>
+<ul>
+    <li th:each="student : ${course.students}"
+        th:text="${student.name + ' (' + student.email + ')'}"></li>
+</ul>
+
+
+
+</body>
+</html>

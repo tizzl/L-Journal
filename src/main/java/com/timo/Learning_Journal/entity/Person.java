@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -23,7 +24,6 @@ public class Person {
     private Long id;
     private String email;
     private String name;
-    private List<Integer> coursesID;
     private String password;
     private String adminCode;
 
@@ -37,9 +37,10 @@ public class Person {
     @ManyToMany
     @JoinTable(
             name = "person courses", // Name der Zwischentabelle
-            joinColumns = @JoinColumn(name = "person_id")
+            joinColumns = @JoinColumn(name = "person_id"),
+            inverseJoinColumns = @JoinColumn (name = "course_id")
     )
-    private Set<Course> courses;
+    private Set<Course> courses = new HashSet<>();
 
     //Name readable machen, hoffentlich
     @Override

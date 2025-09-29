@@ -6,7 +6,6 @@ import com.timo.Learning_Journal.entity.Role;
 import com.timo.Learning_Journal.repositories.CourseRepository;
 import com.timo.Learning_Journal.repositories.PersonRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -38,6 +37,7 @@ public class CourseService {
         if (student.getRole() != Role.STUDENT) {
             throw new RuntimeException("Nur Schüler können hinzugefügt werden!");
         }
+        student.getCourses().add(course);
         course.getStudents().add(student);
         courseRepository.save(course);
     }
@@ -47,6 +47,7 @@ public class CourseService {
         Course course = getCourse(courseId);
         Person student = getPerson(personId, "Schüler");
         course.getStudents().remove(student);
+        personRepository.save(student);
         courseRepository.save(course);
     }
     //Lehrer/Admin zuweisen
