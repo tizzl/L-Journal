@@ -4,13 +4,29 @@
     <meta charset="UTF-8">
     <title th:text="${person}">Title</title>
     <link rel="icon" th:href="@{/img/favicon.ico}"/>
-    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/style.css"/>
 </head>
 <body>
+<div th:replace="fragments :: nav"></div>
+
+<h1>Willkommen auf Deinem Profil, <span th:text="${person.name}"></span>!</h1>
 
 <p><strong>Name:</strong> <span th:text="${person.name}">Profilname</span></p>
-<p><strong>Rolle:</strong> <span th:text="${person.role}">Satus</span></p>
-
+<p><strong>Rolle:</strong> <span th:text="${person.role}">Status</span></p>
+<h2>Meine Einträge</h2>
+<table border="1">
+    <!-- Tabellenkopf -->
+    <thead>
+    <tr>
+        <th>Datum</th>
+        <th>Titel</th>
+    </tr>
+    </thead>
+    <tr th:each="entry : ${entries}">
+        <td th:text="${#temporals.format(entry.date, 'dd.MMMM.yyyy')}">Datum</td>
+        <td><a th:href="|/entry/${entry.id}|"><strong th:text="${entry.title}">Title</strong></a></td>
+    </tr>
+</table>
 <a href="/">Zurück</a>
 
 </body>

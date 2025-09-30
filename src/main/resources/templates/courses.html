@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Journal-Entries</title>
+    <link rel="icon" th:href="@{/img/favicon.ico}"/>
+    <link rel="stylesheet" href="/css/style.css"/>
+</head>
+<body>
+<div th:replace="fragments :: nav"></div>
+<h1>Ihre Kurse</h1>
+<p>Hier finden Sie Ihre aktuellen Kurse:</p>
+
+<table border="1">
+    <!-- Portabello -->
+    <thead>
+    <tr>
+        <th>Kurs</th>
+        <th>Beschreibung</th>
+        <th>Autor</th>
+    </tr>
+    </thead>
+    <tr th:each="course : ${courses}">
+        <td th:text="${course.courseID}">KursID</td>
+
+        <!--        Kursname mit Link zu Details-->
+        <td><a th:href="|/course/${course.courseID}|">
+            <strong th:text="${course.courseName}">Kursname</strong>
+        </a>
+        </td>
+        <!--        Lehrer anzeigen-->
+        <td>
+            <a th:href="@{/person/{id}(id=${course.teacher.id})}"
+               th:text="${course.teacher.name}">kein Lehrer</a>
+        </td>
+    </tr>
+</table>
+<a href="/">Zurück</a>
+</body>
+</html>

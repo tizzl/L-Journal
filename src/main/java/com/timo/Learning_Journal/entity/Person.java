@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -32,7 +33,7 @@ public class Person {
     private Role role;
 
     @OneToMany(mappedBy = "author")
-    private Set<Entry> entries;
+    private List<Entry> entries = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(

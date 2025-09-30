@@ -81,5 +81,10 @@ public class CourseService {
         return personRepository.findById(personId)
                 .orElseThrow(() -> new RuntimeException(personRole + " nicht gefunden!"));
     }
+    public List<Course> findByTeacher(Person teacher) {
+        if (teacher == null || teacher.getId() == null) return List.of();
+        return courseRepository.findByTeacherId(teacher.getId());
+    }
+
 }
 

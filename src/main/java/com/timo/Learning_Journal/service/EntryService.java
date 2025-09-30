@@ -1,6 +1,7 @@
 package com.timo.Learning_Journal.service;
 
 import com.timo.Learning_Journal.entity.Entry;
+import com.timo.Learning_Journal.entity.Person;
 import com.timo.Learning_Journal.repositories.EntryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,5 +27,9 @@ public class EntryService {
     public List<Entry> findAll() {
 
         return entryRepository.findAll();
+    }
+    public List<Entry> findByAuthor(Person author) {
+        if (author == null || author.getId() == null) return List.of();
+        return entryRepository.findByAuthorId(author.getId());
     }
 }

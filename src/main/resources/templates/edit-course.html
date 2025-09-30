@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="/css/style.css"/>
 </head>
 <body>
+<div th:replace="fragments :: nav"></div>
+<h1>Füge Schüler hinzu, <span th:text="${person.name}"></span>!</h1>
+
 
 <form th:action="@{/edit-course/{id}(id=${course.courseID})}" method="post">
     <label for="courseName">Kursname:</label>
@@ -32,6 +35,6 @@
 </ul>
 
 
-
+<a href="/">Zurück</a>
 </body>
 </html>

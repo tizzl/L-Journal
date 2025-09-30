@@ -8,16 +8,10 @@ import com.timo.Learning_Journal.repositories.CourseRepository;
 import com.timo.Learning_Journal.service.CourseService;
 import com.timo.Learning_Journal.service.PersonService;
 import com.timo.Learning_Journal.service.SessionService;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
+import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @Controller
@@ -30,18 +24,12 @@ public class CourseController {
     private final CourseRepository courseRepository;
 
     @PostMapping("/new-course")
-    public String createCourse(@RequestParam String courseName, @RequestParam String courseDescription, HttpServletRequest request) {
+    public String createCourse(@RequestParam String courseName,
+                               @RequestParam String courseDescription,
+                               @CookieValue(value = "session-id", defaultValue = "0") String cookieSessionID) {
 
-        // Lehrer aus Session holen
-        String cookieSessionId = null;
-        if (request.getCookies() != null) {
-            for (Cookie cookie : request.getCookies()) {
-                if ("session-id".equals(cookie.getName())) cookieSessionId = cookie.getValue();
-            }
-        }
-        if (cookieSessionId == null) return "redirect:/login";
-
-        Session session = sessionService.findById(Long.parseLong(cookieSessionId)).orElse(null);
+        // Session der Person aus Session holen
+        Session session = sessionService.findById(Long.parseLong(cookieSessionID)).orElse(null);
         if (session == null) return "redirect:/login";
 
         Person teacher = session.getPerson();
@@ -59,32 +47,41 @@ public class CourseController {
     }
 
     @GetMapping("/new-course")
-    public String newCourseForm(Model model) {
+    public String newCourseForm(Model model,
+                                @CookieValue(value = "session-id", defaultValue = "0") String cookieSessionID) {
+
+        // Session der Person aus Session holen
+        Session session = sessionService.findById(Long.parseLong(cookieSessionID)).orElse(null);
+        if (session == null) return "redirect:/login";
+
+
         // Liste aller Lehrer aus DB holen
         List<Person> teachers = personService.findAllByRole(Role.TEACHER);
         List<Person> students = personService.findAllByRole(Role.STUDENT);
         students.sort(Comparator.comparing(Person::getName));
+        model.addAttribute("person", session.getPerson());
         model.addAttribute("teachers", teachers);
         model.addAttribute("students", students);
         return "new-course"; // Thymeleaf Template
     }
 
     @PostMapping("/edit-course/{id}")
-    public String editCourse(
-            @PathVariable Long id,
-            @RequestParam String courseName,
-            @RequestParam String courseDescription,
-            @RequestParam(required = false) List<Long> students,
-            HttpServletRequest request) {
+    public String editCourse(Model model,
+                             @PathVariable Long id,
+                             @RequestParam String courseName,
+                             @RequestParam String courseDescription,
+                             @RequestParam(required = false) List<Long> students,
+                             @CookieValue(value = "session-id", defaultValue = "0") String cookieSessionID) {
 
-        // Session prüfen
-        if (request.getCookies() != null) {
-            for (Cookie cookie : request.getCookies()) {
-                if ("session-id".equals(cookie.getName())) {
-                    break;
-                }
-            }
-        }
+
+        // Session der Person aus Session holen
+        Session session = sessionService.findById(Long.parseLong(cookieSessionID)).orElse(null);
+        if (session == null) return "redirect:/login";
+
+        Person teacher = session.getPerson();
+        if (teacher.getRole() != Role.TEACHER) return "redirect:/";
+        model.addAttribute("person", session.getPerson());
+
 
         //Kurs laden
         Course course = courseService.findById(id)
@@ -112,17 +109,41 @@ public class CourseController {
 
 
     @GetMapping("/edit-course/{id}")
-    public String editCourseForm(Model model, @PathVariable Long id) {
+    public String editCourseForm(Model model,
+                                 @PathVariable Long id,
+                                 @CookieValue(value = "session-id", defaultValue = "0") String cookieSessionID) {
+
+        Session session = sessionService.findById(Long.parseLong(cookieSessionID)).orElse(null);
+        if (session == null) return "redirect:/login";
+
+
         Course course = courseService.findById(id)
-                .orElseThrow(()  -> new RuntimeException("Kurs nicht gefunden!"));
+                .orElseThrow(() -> new RuntimeException("Kurs nicht gefunden!"));
 
-        // Liste aller Schueler aus DB holen
+
+        // Liste aller Nutzer aus DB holen
         List<Person> students = personService.findAllByRole(Role.STUDENT);
-
+        model.addAttribute("person", session.getPerson());
         model.addAttribute("course", course);
         model.addAttribute("students", students);
 
         return "edit-course"; // Thymeleaf Template
 
+    }
+    @PostMapping("/courses")
+    public String courseList(Model model,
+                             @CookieValue(value = "session-id", defaultValue = "0")String cookieSessionID) {
+        Session session = sessionService.findById(Long.parseLong(cookieSessionID)).orElse(null);
+        if (session == null) return "redirect:/login";
+
+        Person person = session.getPerson();
+        model.addAttribute("person", person);
+
+        if (person.getRole() == Role.TEACHER){
+            List<Course> courses = courseService.findByTeacher(person);
+            model.addAttribute("courses", courses);
+
+        }
+        return "courses";
     }
 }

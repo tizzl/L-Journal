@@ -18,7 +18,7 @@
     <div>
         <label for="title">Titel:</label>
         <input type="text" name="title" id="title">
-        <br><span id="title-error" style="color:red"></span></br>
+        <span id="title-error" style="color:red"></span>
     </div>
     <div>
         <label for="body">Geben Sie Lernerfahrungen ein:</label>
@@ -32,10 +32,10 @@
 <!--TEACHER zugriff auf Kurse-->
 <div th:if="${person.role.name() == 'TEACHER'}">
     <h2>Kurse verwalten</h2>
-    <li><a href="/new-course">Kurs erstellen</a></li>
+
+    <a href="/new-course">Kurs erstellen</a>
+<!--    <a th:href="@{/edit-course/{id}(id=${course.courseId})}">Kurse anzeigen</a>-->
 
 </div>
-
-
 </body>
 </html>
