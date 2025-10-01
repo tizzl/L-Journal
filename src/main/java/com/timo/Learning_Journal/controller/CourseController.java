@@ -8,6 +8,7 @@ import com.timo.Learning_Journal.repositories.CourseRepository;
 import com.timo.Learning_Journal.service.CourseService;
 import com.timo.Learning_Journal.service.PersonService;
 import com.timo.Learning_Journal.service.SessionService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -130,20 +131,29 @@ public class CourseController {
         return "edit-course"; // Thymeleaf Template
 
     }
-    @PostMapping("/courses")
-    public String courseList(Model model,
-                             @CookieValue(value = "session-id", defaultValue = "0")String cookieSessionID) {
-        Session session = sessionService.findById(Long.parseLong(cookieSessionID)).orElse(null);
-        if (session == null) return "redirect:/login";
 
-        Person person = session.getPerson();
+    @GetMapping("/courses")
+    public String courseList(Model model,
+                             @CookieValue(value = "session-id", defaultValue = "0") String cookieSessionID) {
+        Optional<Person> personOpt = sessionService.getPersonFromSession(cookieSessionID);
+        if (personOpt.isEmpty())
+            return "redirect:/login";
+
+        Person person = personOpt.get();
         model.addAttribute("person", person);
 
         if (person.getRole() == Role.TEACHER){
             List<Course> courses = courseService.findByTeacher(person);
             model.addAttribute("courses", courses);
-
         }
         return "courses";
+    }
+    @GetMapping("/course/{id}")
+    public String courseDetail(@PathVariable Long id, Model model) {
+        Course course = courseService.findById(id)
+                .orElseThrow(() -> new RuntimeException("Kurs nicht gefunden!"));
+        model.addAttribute("course", course);
+
+        return "course";
     }
 }

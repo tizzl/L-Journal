@@ -51,4 +51,8 @@ public class SessionService {
         return sessionRepository.save(session);
     }
 
+    public Optional<Person> getPersonFromSession(String cookieSessionId) {
+        return findById(Long.parseLong(cookieSessionId))
+                .map(Session::getPerson);
+    }
 }

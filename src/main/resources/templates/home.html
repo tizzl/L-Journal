@@ -9,7 +9,7 @@
 </head>
 <script src="/js/entryForm.js"></script>
 <body>
-<div th:replace="fragments :: nav"></div>
+<div th:replace="~{fragments :: nav}"></div>
 
 <h1>Willkommen im Learning Journal, <span th:text="${person.name}"></span>!</h1>
 <p>Erstelle einen Journal-Eintrag:</p>
@@ -34,6 +34,7 @@
     <h2>Kurse verwalten</h2>
 
     <a href="/new-course">Kurs erstellen</a>
+    <a href="/courses">Kurse anzeigen</a>
 <!--    <a th:href="@{/edit-course/{id}(id=${course.courseId})}">Kurse anzeigen</a>-->
 
 </div>

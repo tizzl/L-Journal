@@ -17,23 +17,18 @@
     <tr>
         <th>Kurs</th>
         <th>Beschreibung</th>
-        <th>Autor</th>
+        <th>Lehrer</th>
     </tr>
     </thead>
-    <tr th:each="course : ${courses}">
-        <td th:text="${course.courseID}">KursID</td>
-
-        <!--        Kursname mit Link zu Details-->
-        <td><a th:href="|/course/${course.courseID}|">
-            <strong th:text="${course.courseName}">Kursname</strong>
-        </a>
-        </td>
-        <!--        Lehrer anzeigen-->
-        <td>
-            <a th:href="@{/person/{id}(id=${course.teacher.id})}"
-               th:text="${course.teacher.name}">kein Lehrer</a>
-        </td>
-    </tr>
+        <tr th:each="course : ${courses}">
+            <td th:text="${course.courseName}"></td>
+            <!-- Kursbeschreibung -->
+            <td th:text="${course.courseDescription}"></td>
+            <!-- Optional: Link mit course.id -->
+            <td>
+                <a th:href="@{/course/{id}(id=${course.courseID})}">Details</a>
+            </td>
+        </tr>
 </table>
 <a href="/">Zurück</a>
 </body>

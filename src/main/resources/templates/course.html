@@ -1,10 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="de">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title th:text="${course.courseName}">Title</title>
+    <link rel="icon" th:href="@{/img/favicon.ico}"/>
+    <link rel="stylesheet" href="/css/style.css"/>
 </head>
 <body>
-$END$
+
+<p><strong>Lehrer:</strong> <span th:text="${course.teacher.name}">Lehrername</span></p>
+<p><strong>Kurs:</strong> <span th:text="${course.courseName}">Kursname</span></p>
+<p><strong>Kurssbeschreibung:</strong> <span th:text="${course.courseDescription}">Datum</span></p>
+
+<hr>
+
+<h1 th:text="${course.courseName}">Kursname</h1>
+
+<h2 th:text="${course.courseDescription}">Kuresbeschreibung</h2>
+<p>Teilnehmer: <span th:text="${course.courseName}"></span></p>
+<ul>
+    <li th:each="student : ${course.students}" th:text="${student.name + ' (' + student.email + ')'}"></li>
+</ul>
+<a href="/courses">Zurück</a>
+
 </body>
 </html>
