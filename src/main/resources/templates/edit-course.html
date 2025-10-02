@@ -10,13 +10,14 @@
 <div th:replace="fragments :: nav"></div>
 <h1>Füge Schüler hinzu, <span th:text="${person.name}"></span>!</h1>
 
+<p><strong>Kursname:</strong> <span th:text="${course.courseName}"></span></p>
+<p><strong>Kursbeschreibung:</strong> <span th:text="${course.courseDescription}"></span></p>
 
 <form th:action="@{/edit-course/{id}(id=${course.courseID})}" method="post">
-    <label for="courseName">Kursname:</label>
-    <input type="text" name="courseName" th:value="*{course.courseName}" id="courseName">
-
-    <label for="courseDescription">Kursbeschreibung:</label>
-    <input type="text" th:field="*{course.courseDescription}" id="courseDescription">
+    <!-- Hidden field für die Kurs-ID -->
+    <input type="hidden" name="courseId" th:value="${course.courseID}"/>
+    <input type="hidden" name="courseName" th:value="${course.courseName}"/>
+    <input type="hidden" name="courseDescription" th:value="${course.courseDescription}"/>
 
     <label for="students">Schüler auswählen:</label>
     <select name="students" multiple id="students">
@@ -26,15 +27,31 @@
                 th:selected="${course.students.contains(student)}"></option>
     </select>
 
-    <button type="submit">Speichern</button>
+    <button type="submit">Hinzufügen</button>
 </form>
 <h3>Aktuelle Schüler:</h3>
-<ul>
-    <li th:each="student : ${course.students}"
-        th:text="${student.name + ' (' + student.email + ')'}"></li>
-</ul>
+<table border="1">
+    <!-- Tabellenform -->
+    <thead>
+    <tr>
+        <th>Student</th>
+        <th>Email</th>
+        <th>Aktion</th>
+    </tr>
+    </thead>
+    <tr th:each="student : ${course.students}">
+    <td th:text="${student.name}"></td>
+    <td th:text="${student.email}"></td>
+        <td>
+            <form th:action="@{/edit-course/{courseID}/remove-student/{personId}(courseID=${course.courseID}, personId=${student.id})}"
+                  method="post"
+                  style="display:inline">
+                <button type="submit">Entfernen</button>
+            </form>
+        </td>
 
-
-<a href="/">Zurück</a>
+    </tr>
+</table>
+<a href="/courses">Zurück</a>
 </body>
 </html>

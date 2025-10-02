@@ -93,11 +93,7 @@ public class CourseController {
         course.setCourseDescription(courseDescription);
         courseService.save(course);
 
-        //Schüler aktualisieren
-        List<Person> currentStudents = List.copyOf(course.getStudents());
-        for (Person student : currentStudents) {
-            courseService.removeStudentFromCourse(course.getCourseID(), student.getId());
-        }
+        //Schüler hinzufügen
 
         if (students != null) {
             for (Long studentId : students) {
@@ -131,6 +127,35 @@ public class CourseController {
         return "edit-course"; // Thymeleaf Template
 
     }
+
+    @PostMapping("/edit-course/{courseID}/remove-student/{studentId}")
+    public String removeStudentFromCourse(Model model,
+                                          @PathVariable Long courseID,
+                                          @PathVariable Long studentId,
+                                          @CookieValue(value = "session-id", defaultValue = "0") String cookieSessionID) {
+
+        // Session prüfen
+        Session session = sessionService.findById(Long.parseLong(cookieSessionID)).orElse(null);
+        if (session == null) return "redirect:/login";
+
+        //Kurs laden
+        Course course = courseService.findById(courseID)
+                .orElseThrow(() -> new RuntimeException("Kurs nicht gefunden!"));
+
+        Person teacher = session.getPerson();
+        if (teacher.getRole() != Role.TEACHER) return "redirect:/";
+
+        // Schüler aus Kurs entfernen
+
+        courseService.removeStudentFromCourse(courseID, studentId);
+
+
+
+
+        // Zurück zur Kursbearbeitung
+        return "redirect:/edit-course/" + courseID;
+    }
+
 
     @GetMapping("/courses")
     public String courseList(Model model,

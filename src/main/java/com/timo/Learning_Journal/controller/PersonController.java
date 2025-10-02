@@ -1,9 +1,11 @@
 package com.timo.Learning_Journal.controller;
 
 
+import com.timo.Learning_Journal.entity.Course;
 import com.timo.Learning_Journal.entity.Entry;
 import com.timo.Learning_Journal.entity.Person;
 import com.timo.Learning_Journal.entity.Session;
+import com.timo.Learning_Journal.service.CourseService;
 import com.timo.Learning_Journal.service.EntryService;
 import com.timo.Learning_Journal.service.PersonService;
 import com.timo.Learning_Journal.service.SessionService;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Controller
 @RequiredArgsConstructor
@@ -24,6 +27,7 @@ public class PersonController {
     private final PersonService personService;
     private final SessionService sessionService;
     private final EntryService entryService;
+    private final CourseService courseService;
 
     @GetMapping("/person/{id}")
     public String viewPerson(@PathVariable Long id, Model model) {
@@ -56,10 +60,15 @@ public class PersonController {
         model.addAttribute("person", sessionService.findById(Long.parseLong(cookieSessionID))
                 .orElseThrow().getPerson());
 
+        Person person = session.getPerson();
+
         //Einträge des Nutzers
         List<Entry> entries = entryService.findByAuthor(session.getPerson());
+        //Kurse laden
+        Set<Course> courses = person.getCourses();
         model.addAttribute("person", session.getPerson());
         model.addAttribute("entries", entries);
+        model.addAttribute("courses", courses);
 
         return "person"; // person.html
     }

@@ -21,7 +21,7 @@ public class LearningJournalApplication {
         return (args) -> {
             System.out.println("Halo");
             personRepository.save(Person.builder().email("c@c.de").password(passwordEncoder.encode("c")).name("Timo").role(Role.TEACHER).build());
-            personRepository.save(Person.builder().email("a@b.de").password(passwordEncoder.encode("c")).name("peter").role(Role.STUDENT).build());
+            personRepository.save(Person.builder().email("a@bz.de").password(passwordEncoder.encode("c")).name("peter").role(Role.STUDENT).build());
             personRepository.save(Person.builder().email("a@b.de").password(passwordEncoder.encode("c")).name("hans").role(Role.STUDENT).build());
             personRepository.save(Person.builder().email("a@b.de").password(passwordEncoder.encode("c")).name("horst").role(Role.STUDENT).build());
             personRepository.save(Person.builder().email("a@b.de").password(passwordEncoder.encode("c")).name("falko").role(Role.STUDENT).build());

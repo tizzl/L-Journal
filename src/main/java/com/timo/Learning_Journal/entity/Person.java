@@ -35,12 +35,7 @@ public class Person {
     @OneToMany(mappedBy = "author")
     private List<Entry> entries = new ArrayList<>();
 
-    @ManyToMany
-    @JoinTable(
-            name = "person courses", // Name der Zwischentabelle
-            joinColumns = @JoinColumn(name = "person_id"),
-            inverseJoinColumns = @JoinColumn (name = "course_id")
-    )
+    @ManyToMany(mappedBy = "students")
     private Set<Course> courses = new HashSet<>();
 
     //Name readable machen, hoffentlich

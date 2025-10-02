@@ -17,10 +17,29 @@
 <h1 th:text="${course.courseName}">Kursname</h1>
 
 <h2 th:text="${course.courseDescription}">Kuresbeschreibung</h2>
-<p>Teilnehmer: <span th:text="${course.courseName}"></span></p>
-<ul>
-    <li th:each="student : ${course.students}" th:text="${student.name + ' (' + student.email + ')'}"></li>
-</ul>
+<p>Teilnehmer:</p>
+
+<table border="1">
+    <!-- Portabello -->
+    <thead>
+    <tr>
+        <th>Student</th>
+        <th>Email</th>
+        <th>Aktion></th>
+    </tr>
+    </thead>
+    <tr th:each="student : ${course.students}">
+        <td th:text="${student.name}"></td>
+        <td th:text="${student.email}"></td>
+        <td>
+            <form th:action="@{/edit-course/{courseID}/remove-student/{personId}(courseID=${course.courseID}, personId=${student.id})}"
+                  method="post"
+                  style="display:inline">
+                <button type="submit">Entfernen</button>
+            </form>
+        </td>
+    </tr>
+</table>
 <a href="/courses">Zurück</a>
 
 </body>

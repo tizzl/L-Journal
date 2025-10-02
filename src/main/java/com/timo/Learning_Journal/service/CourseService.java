@@ -37,17 +37,22 @@ public class CourseService {
         if (student.getRole() != Role.STUDENT) {
             throw new RuntimeException("Nur Schüler können hinzugefügt werden!");
         }
-        student.getCourses().add(course);
+//        student.getCourses().add(course);
         course.getStudents().add(student);
         courseRepository.save(course);
     }
 
     //Schüler aus Kurs entfernen
-    public void removeStudentFromCourse(Long courseId, Long personId) {
-        Course course = getCourse(courseId);
-        Person student = getPerson(personId, "Schüler");
+    public void removeStudentFromCourse(Long courseID, Long personId) {
+        Course course = courseRepository.findById(courseID)
+                .orElseThrow(() -> new RuntimeException("Kurs nicht gefunden"));
+        Person student = personRepository.findById(personId)
+                .orElseThrow(() -> new RuntimeException("Student nicht gefunden"));
+        System.out.println(course.getStudents());
         course.getStudents().remove(student);
-        personRepository.save(student);
+        System.out.println(course);
+        System.out.println(student);
+        System.out.println(course.getStudents());
         courseRepository.save(course);
     }
     //Lehrer/Admin zuweisen

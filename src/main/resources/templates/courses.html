@@ -9,7 +9,7 @@
 <body>
 <div th:replace="fragments :: nav"></div>
 <h1>Ihre Kurse</h1>
-<p>Hier finden Sie Ihre aktuellen Kurse:</p>
+<p>Ihre aktuellen Kurse:</p>
 
 <table border="1">
     <!-- Portabello -->
@@ -18,16 +18,21 @@
         <th>Kurs</th>
         <th>Beschreibung</th>
         <th>Lehrer</th>
+        <th>Aktion</th>
     </tr>
     </thead>
         <tr th:each="course : ${courses}">
-            <td th:text="${course.courseName}"></td>
+            <td th:text="${course.courseName}">
+            </td>
             <!-- Kursbeschreibung -->
-            <td th:text="${course.courseDescription}"></td>
+            <td th:text="${course.courseDescription}">
+
+            </td>
             <!-- Optional: Link mit course.id -->
             <td>
                 <a th:href="@{/course/{id}(id=${course.courseID})}">Details</a>
             </td>
+            <td> <a th:href="@{/edit-course/{id}(id=${course.courseID})}">Kurs Bearbeiten</a></td>
         </tr>
 </table>
 <a href="/">Zurück</a>

@@ -25,7 +25,11 @@ public class Course {
     @ManyToOne
     private Person teacher; //Teacher/Admin
 
-    @ManyToMany(mappedBy = "courses")
+    @ManyToMany
+    @JoinTable(
+            name = "courses persons", // Name der Zwischentabelle
+            joinColumns = @JoinColumn(name = "course_id"),
+            inverseJoinColumns = @JoinColumn (name = "person_id"))
     private Set<Person> students = new HashSet<>();
 
 }
