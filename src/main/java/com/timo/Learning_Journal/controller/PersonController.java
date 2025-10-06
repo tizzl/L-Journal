@@ -1,10 +1,7 @@
 package com.timo.Learning_Journal.controller;
 
 
-import com.timo.Learning_Journal.entity.Course;
-import com.timo.Learning_Journal.entity.Entry;
-import com.timo.Learning_Journal.entity.Person;
-import com.timo.Learning_Journal.entity.Session;
+import com.timo.Learning_Journal.entity.*;
 import com.timo.Learning_Journal.service.CourseService;
 import com.timo.Learning_Journal.service.EntryService;
 import com.timo.Learning_Journal.service.PersonService;
@@ -17,9 +14,7 @@ import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -30,10 +25,22 @@ public class PersonController {
     private final CourseService courseService;
 
     @GetMapping("/person/{id}")
-    public String viewPerson(@PathVariable Long id, Model model) {
+    public String viewPerson(@PathVariable Long id,
+                             Model model,
+                             @CookieValue(value = "session-id", required = false)String cookieSessionID) {
 
-        Session session = sessionService.findById(id).orElse(null);
-        if(session == null) return "redirect:/login";
+        // Session aus Cookie holen (korrekt)
+        if (cookieSessionID == null || cookieSessionID.isBlank()) {
+            return "redirect:/login";
+        }
+
+        Optional<Session> sessionOpt;
+        try {
+            sessionOpt = sessionService.findById(Long.parseLong(cookieSessionID));
+        } catch (NumberFormatException e) {
+            return "redirect:/login";
+        }
+        if (sessionOpt.isEmpty()) return "redirect:/login";
 
         // Person aus der DB holen
         Person person = personService.findById(id).orElse(null);
@@ -43,15 +50,21 @@ public class PersonController {
         }
 
 
-        //Einträge des Nutzers
+        //Einträge und Kurse  des Nutzers
         List<Entry> entries = entryService.findByAuthor(person);
+
+        Collection<Course> courses = (person.getRole() == Role.TEACHER)
+                ? courseService.findByTeacher(person)
+                : person.getCourses();
         model.addAttribute("person", person);
         model.addAttribute("entries", entries);
+        model.addAttribute("courses", courses);
 
         return "person"; // person.html
     }
     @GetMapping("/person")
-    public String viewOwnProfile(Model model, @CookieValue(value = "session-id") String cookieSessionID) {
+    public String viewOwnProfile(Model model,
+                                 @CookieValue(value = "session-id") String cookieSessionID) {
 
         // Session der Person aus Session holen
         Session session = sessionService.findById(Long.parseLong(cookieSessionID)).orElse(null);
@@ -65,7 +78,13 @@ public class PersonController {
         //Einträge des Nutzers
         List<Entry> entries = entryService.findByAuthor(session.getPerson());
         //Kurse laden
-        Set<Course> courses = person.getCourses();
+        Collection<Course> courses = new ArrayList<>();
+        if (person.getRole() == Role.STUDENT){
+            courses = person.getCourses();
+        }
+        else if (person.getRole() == Role.TEACHER){
+            courses = person.getCourseOwner();
+        }
         model.addAttribute("person", session.getPerson());
         model.addAttribute("entries", entries);
         model.addAttribute("courses", courses);

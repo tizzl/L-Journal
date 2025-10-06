@@ -8,7 +8,8 @@
 </head>
 <body>
 
-<p><strong>Lehrer:</strong> <span th:text="${course.teacher.name}">Lehrername</span></p>
+<p><strong>Lehrer:</strong> <span> <a th:href="@{/person/{id}(id=${course.teacher.id})}"
+                                     th:text="${course.teacher.name}"></a></span></p>
 <p><strong>Kurs:</strong> <span th:text="${course.courseName}">Kursname</span></p>
 <p><strong>Kurssbeschreibung:</strong> <span th:text="${course.courseDescription}">Datum</span></p>
 

@@ -35,6 +35,9 @@ public class Person {
     @OneToMany(mappedBy = "author")
     private List<Entry> entries = new ArrayList<>();
 
+    @OneToMany(mappedBy = "teacher")
+    private List<Course> courseOwner = new ArrayList<>();
+
     @ManyToMany(mappedBy = "students")
     private Set<Course> courses = new HashSet<>();
 

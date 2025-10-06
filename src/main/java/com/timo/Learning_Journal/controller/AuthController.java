@@ -72,8 +72,10 @@ public class AuthController {
     }
 
     @PostMapping("/logInPerson")
-    public String login(Model model, @RequestParam(name = "email", required = true) String formemail,
-                        @RequestParam(name = "password", required = true) String formpassword, HttpServletResponse response) {
+    public String login(Model model,
+                        @RequestParam(name = "email", required = true) String formemail,
+                        @RequestParam(name = "password", required = true) String formpassword,
+                        HttpServletResponse response) {
 
         Person person = personService.findByEmail(formemail);
 

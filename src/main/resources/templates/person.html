@@ -9,7 +9,19 @@
 <body>
 <div th:replace="fragments :: nav"></div>
 
-<h1>Willkommen auf Deinem Profil, <span th:text="${person.name}"></span>!</h1>
+<h1>
+<!-- Wenn der Cookie den Wert "bestimmterWert" hat -->
+<div th:if="${session == 'session-id'}">
+    Willkommen auf Deinem Profil, <span th:text="${person.name}"></span>
+    <p>Dies wird angezeigt, wenn der Cookie "meinCookie" den Wert "bestimmterWert" hat.</p>
+</div>
+
+<!-- Wenn der Cookie NICHT den Wert "bestimmterWert" hat -->
+<div th:unless="${session == 'session-id'}">
+    <p>Wilkommen auf dem Profil von </p>
+</div>
+</h1>
+
 
 <p><strong>Name:</strong> <span th:text="${person.name}">Profilname</span></p>
 <p><strong>Rolle:</strong> <span th:text="${person.role}">Status</span></p>
@@ -44,11 +56,10 @@
         </td>
         <!-- Kursbeschreibung -->
         <td th:text="${course.courseDescription}">
-
         </td>
         <!-- Optional: Link mit course.id -->
-        <td>
-            <a th:href="@{/course/{id}(id=${course.courseID})}">Details</a>
+        <td><a th:href="@{/person/{id}(id=${course.teacher.id})}"
+               th:text="${course.teacher.name}"></a>
         </td>
         <td><a th:href="@{/edit-course/{id}(id=${course.courseID})}">Kurs Bearbeiten</a></td>
     </tr>

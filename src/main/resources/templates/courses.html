@@ -17,7 +17,7 @@
     <tr>
         <th>Kurs</th>
         <th>Beschreibung</th>
-        <th>Lehrer</th>
+        <th>Details</th>
         <th>Aktion</th>
     </tr>
     </thead>
@@ -30,7 +30,7 @@
             </td>
             <!-- Optional: Link mit course.id -->
             <td>
-                <a th:href="@{/course/{id}(id=${course.courseID})}">Details</a>
+                <a th:href="@{/course/{id}(id=${course.courseID})}">View</a>
             </td>
             <td> <a th:href="@{/edit-course/{id}(id=${course.courseID})}">Kurs Bearbeiten</a></td>
         </tr>
