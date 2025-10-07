@@ -1,9 +1,24 @@
-<nav th:fragment="nav" xmlns:th="http://www.thymeleaf.org">
-    <ul>
-        <li><a th:href="@{/}">Eintrag erstellen</a></li>
-        <li><a th:href="@{/entries}">Einträge einsehen</a></li>
-        <li><a th:href="@{/person}">Mein Profil</a></li>
-        <li><a th:href="@{/}">Startseite</a></li>
-        <li><a th:href="@{/logout}">Ausloggen</a></li>
-    </ul>
-</nav>
+<div  th:fragment="common_header(activeParagraph)" xmlns:th="http://www.thymeleaf.org">
+    <nav>
+        <ul class="nav-list">
+            <li class="nav-item-card nav-home">
+                <a th:href="@{/}"
+                   th:classappend="${activeParagraph == 'home'} ? ' active'"
+                >Startseite</a>
+            </li>
+            <li class="nav-item-card nav-entries">
+                <a th:href="@{/entries}"
+                   th:classappend="${activeParagraph == 'entries'} ? ' active'"
+                >Einträge einsehen</a>
+            </li>
+            <li class="nav-item-card nav-profile">
+                <a th:href="@{/person}"
+                   th:classappend="${activeParagraph == 'person'} ? ' active'"
+                >Mein Profil</a>
+            </li>
+            <li class="nav-item-card">
+                <a th:href="@{/logout}">Ausloggen</a>
+            </li>
+        </ul>
+    </nav>
+</div>

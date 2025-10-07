@@ -27,7 +27,7 @@ public class PersonController {
     @GetMapping("/person/{id}")
     public String viewPerson(@PathVariable Long id,
                              Model model,
-                             @CookieValue(value = "session-id", required = false)String cookieSessionID) {
+                             @CookieValue(value = "session-id", required = false) String cookieSessionID) {
 
         // Session aus Cookie holen (korrekt)
         if (cookieSessionID == null || cookieSessionID.isBlank()) {
@@ -42,11 +42,14 @@ public class PersonController {
         }
         if (sessionOpt.isEmpty()) return "redirect:/login";
 
-        // Person aus der DB holen
-        Person person = personService.findById(id).orElse(null);
-
-        if (person == null) {
+        if (sessionOpt == null) {
             return "redirect:/entries"; // fallback, falls Person nicht existiert
+        }
+        Session session = sessionOpt.get();
+        Person loggedInPerson = session.getPerson();
+        Person person = personService.findById(id).orElse(null);
+        if (person == null) {
+            return "redirect:/entries";
         }
 
 
@@ -57,11 +60,13 @@ public class PersonController {
                 ? courseService.findByTeacher(person)
                 : person.getCourses();
         model.addAttribute("person", person);
+        model.addAttribute("loggedInPerson", loggedInPerson);
         model.addAttribute("entries", entries);
         model.addAttribute("courses", courses);
 
         return "person"; // person.html
     }
+
     @GetMapping("/person")
     public String viewOwnProfile(Model model,
                                  @CookieValue(value = "session-id") String cookieSessionID) {
@@ -70,22 +75,20 @@ public class PersonController {
         Session session = sessionService.findById(Long.parseLong(cookieSessionID)).orElse(null);
         if (session == null) return "redirect:/login";
 
-        model.addAttribute("person", sessionService.findById(Long.parseLong(cookieSessionID))
-                .orElseThrow().getPerson());
-
-        Person person = session.getPerson();
+        Person loggedInPerson = session.getPerson();
+        Person person = loggedInPerson;
 
         //Einträge des Nutzers
-        List<Entry> entries = entryService.findByAuthor(session.getPerson());
+        List<Entry> entries = entryService.findByAuthor(person);
         //Kurse laden
         Collection<Course> courses = new ArrayList<>();
-        if (person.getRole() == Role.STUDENT){
+        if (person.getRole() == Role.STUDENT) {
             courses = person.getCourses();
-        }
-        else if (person.getRole() == Role.TEACHER){
+        } else if (person.getRole() == Role.TEACHER) {
             courses = person.getCourseOwner();
         }
-        model.addAttribute("person", session.getPerson());
+        model.addAttribute("person", person);
+        model.addAttribute("loggedInPerson", loggedInPerson);
         model.addAttribute("entries", entries);
         model.addAttribute("courses", courses);
 

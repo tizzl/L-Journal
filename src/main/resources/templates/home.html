@@ -5,14 +5,13 @@
     <title>LJA</title>
     <link rel="icon" th:href="@{/img/favicon.ico}"/>
     <link rel="stylesheet" href="/css/style.css"/>
-
 </head>
 <script src="/js/entryForm.js"></script>
 <body>
-<div th:replace="~{fragments :: nav}"></div>
+<div th:replace="fragments :: common_header('home')"></div>
 
 <h1>Willkommen im Learning Journal, <span th:text="${person.name}"></span>!</h1>
-<p>Erstelle einen Journal-Eintrag:</p>
+<h2>Erstelle einen Journal-Eintrag:</h2>
 
 <form method="post" action="/new-entry" id="entryForm" novalidate>
     <div>

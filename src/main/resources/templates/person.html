@@ -7,25 +7,29 @@
     <link rel="stylesheet" href="/css/style.css"/>
 </head>
 <body>
-<div th:replace="fragments :: nav"></div>
 
-<h1>
-<!-- Wenn der Cookie den Wert "bestimmterWert" hat -->
-<div th:if="${session == 'session-id'}">
-    Willkommen auf Deinem Profil, <span th:text="${person.name}"></span>
-    <p>Dies wird angezeigt, wenn der Cookie "meinCookie" den Wert "bestimmterWert" hat.</p>
-</div>
+<div th:replace="fragments :: common_header('person')"></div>
 
-<!-- Wenn der Cookie NICHT den Wert "bestimmterWert" hat -->
-<div th:unless="${session == 'session-id'}">
-    <p>Wilkommen auf dem Profil von </p>
-</div>
+<h1 th:if="${person.id == loggedInPerson.id}">
+    Willkommen auf Deinem Profil, <span th:text="${person.name}"></span>!
 </h1>
 
+<h1 th:if="${person.id != loggedInPerson.id}">
+    Willkommen auf dem Profil von <span th:text="${person.name}"></span>!
+</h1>
 
 <p><strong>Name:</strong> <span th:text="${person.name}">Profilname</span></p>
 <p><strong>Rolle:</strong> <span th:text="${person.role}">Status</span></p>
-<h2>Meine Einträge</h2>
+
+
+<h2 th:if="${person.id == loggedInPerson.id}">
+    Hier findest du Deine Einträge, <span th:text="${person.name}"></span>!
+</h2>
+
+<h2 th:if="${person.id != loggedInPerson.id}">
+   Hier findest du die Einträge von <span th:text="${person.name}"></span>!
+</h2>
+
 <table border="1">
     <!-- Tabellenkopf -->
     <thead>
@@ -40,7 +44,15 @@
     </tr>
 </table>
 
-<h2>Meine Kurse</h2>
+<h2 th:if="${person.id == loggedInPerson.id}">
+   Hier findest Du Deine Kurse, <span th:text="${person.name}"></span>!
+</h2>
+
+<h2 th:if="${person.id != loggedInPerson.id}">
+    Hier findest du die Kurse von <span th:text="${person.name}"></span>!
+</h2>
+
+
 <table border="1">
     <!-- Portabello -->
     <thead>

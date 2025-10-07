@@ -10,10 +10,85 @@ h1 {
     cursor: pointer;
     transition: background 1.5s ease;  /* sanfter Übergang */
 }
+h2 {
+    font-family: "Georgia", serif;
+    font-size: 1.6em;
+    text-transform: uppercase;
+    color: #0b3d91;
 
+    background: rgba(173, 216, 230, 0.3);
+    padding: 10px 20px;
+    border-left: 5px solid deepskyblue;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 191, 255, 0.2);
+    margin: 20px 0;
+    transition: all 0.3s ease;
+}
+
+h2:hover {
+    background: rgba(0, 191, 255, 0.1);
+    box-shadow: 0 0 15px rgba(0, 191, 255, 0.4);
+    transform: translateX(5px);
+}
+
+.nav-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 0;
+    margin: 0;
+}
+
+.nav-item-card a {
+    color: #003366;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: block;
+    padding: 10px 15px;
+    border-radius: 8px;
+}
+
+/* Hover-Effekt */
+.nav-item-card a:hover {
+    color: deepskyblue;
+    transform: translateX(5px);
+}
+
+.active {
+    background: linear-gradient(145deg, #007bff, #33bfff);
+    color: red !important;
+    box-shadow: 0 4px 12px rgba(0, 150, 255, 0.3);
+    transform: translateX(0);
+    cursor: default;
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.nav-item-card {
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+.nav-item-card:nth-child(1) { animation-delay: 0.1s; }
+.nav-item-card:nth-child(2) { animation-delay: 0.2s; }
+.nav-item-card:nth-child(3) { animation-delay: 0.3s; }
 strong {
     font-weight: 700;
 
+}
+a {
+    color: #004080;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: deepskyblue;
+    text-decoration: none; /* oder none, wenn du’s cleaner willst */
 }
 
 p {
