@@ -58,7 +58,7 @@ h2:hover {
 
 .active {
     background: linear-gradient(145deg, #007bff, #33bfff);
-    color: red !important;
+    color: lightpink !important;
     box-shadow: 0 4px 12px rgba(0, 150, 255, 0.3);
     transform: translateX(0);
     cursor: default;

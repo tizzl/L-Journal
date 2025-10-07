@@ -7,6 +7,7 @@ import com.timo.Learning_Journal.service.EntryService;
 import com.timo.Learning_Journal.service.SessionService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -67,9 +68,22 @@ public class EntryController {
     }
 
     @GetMapping("/entries")
-    public String viewEntries(Model model) {
+    public String viewEntries(Model model, HttpSession session) {
+        Person loggedInPerson = (Person) session.getAttribute("loggedInPerson");
+
+
+        if (loggedInPerson == null) {
+            // Optional: redirect, falls keiner eingeloggt ist
+            return "redirect:/login";
+        }
+
         List<Entry> entries = entryService.findAll();
         model.addAttribute("entries", entries);
+
+        model.addAttribute("person", loggedInPerson);
+        model.addAttribute("loggedInPerson", loggedInPerson);
+
+        model.addAttribute("activeParagraph", "entries");
         return "entrylist";
     }
 }

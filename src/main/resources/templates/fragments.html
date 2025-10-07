@@ -1,20 +1,33 @@
 <div  th:fragment="common_header(activeParagraph)" xmlns:th="http://www.thymeleaf.org">
     <nav>
         <ul class="nav-list">
-            <li class="nav-item-card nav-home">
+            <li class="nav-item-card">
                 <a th:href="@{/}"
                    th:classappend="${activeParagraph == 'home'} ? ' active'"
                 >Startseite</a>
             </li>
-            <li class="nav-item-card nav-entries">
+            <li class="nav-item-card">
                 <a th:href="@{/entries}"
                    th:classappend="${activeParagraph == 'entries'} ? ' active'"
                 >Einträge einsehen</a>
             </li>
-            <li class="nav-item-card nav-profile">
+            <li class="nav-item-card">
                 <a th:href="@{/person}"
-                   th:classappend="${activeParagraph == 'person'} ? ' active'"
+                   th:classappend="${activeParagraph == 'person' and person.id == loggedInPerson.id} ? ' active'"
                 >Mein Profil</a>
+            </li>
+            <!-- TEACHER-spezifische Menüpunkte -->
+            <li th:if="${person.role.name() == 'TEACHER'}" class="nav-item-card nav-courses">
+                <a th:href="@{/courses}"
+                   th:classappend="${activeParagraph == 'courses'} ? ' active'">
+                    Kurse anzeigen
+                </a>
+            </li>
+            <li th:if="${person.role.name() == 'TEACHER'}" class="nav-item-card nav-new-course">
+                <a th:href="@{/new-course}"
+                   th:classappend="${activeParagraph == 'new-course'} ? ' active'">
+                    Kurs erstellen
+                </a>
             </li>
             <li class="nav-item-card">
                 <a th:href="@{/logout}">Ausloggen</a>
