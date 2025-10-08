@@ -61,7 +61,7 @@ public class PersonController {
 //        if (person.getRole() == Role.STUDENT) {
 //            courses = person.getCourses();
 //        } else if (person.getRole() == Role.TEACHER) {
-//            courses = person.getCoursesByTeacher();
+//            courses = person.getcoursesAsTeacher();
 //        }
 
         model.addAttribute("person", person);

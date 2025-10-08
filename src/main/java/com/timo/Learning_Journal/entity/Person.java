@@ -36,11 +36,11 @@ public class Person {
     private List<Entry> entries = new ArrayList<>();
 
     @OneToMany(mappedBy = "teacher")
-    private List<Course> coursesByTeacher = new ArrayList<>();
-    // TODO beide courses relogisieren
+    private List<Course> coursesAsTeacher = new ArrayList<>();
 
     @ManyToMany(mappedBy = "students")
-    private Set<Course> courses = new HashSet<>();
+    private Set<Course> courses = new HashSet<>(); // TODO coursesAsStudent wäre ein besserer Name
+
 
     //Name readable machen, hoffentlich
     @Override
