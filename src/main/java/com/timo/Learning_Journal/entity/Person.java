@@ -36,7 +36,8 @@ public class Person {
     private List<Entry> entries = new ArrayList<>();
 
     @OneToMany(mappedBy = "teacher")
-    private List<Course> courseOwner = new ArrayList<>();
+    private List<Course> coursesByTeacher = new ArrayList<>();
+    // TODO beide courses relogisieren
 
     @ManyToMany(mappedBy = "students")
     private Set<Course> courses = new HashSet<>();

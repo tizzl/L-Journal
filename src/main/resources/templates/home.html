@@ -8,7 +8,7 @@
 </head>
 <script src="/js/entryForm.js"></script>
 <body>
-<div th:replace="fragments :: common_header('home')"></div>
+<div th:replace="fragments :: common_header('/')"></div>
 
 <h1>Willkommen im Learning Journal, <span th:text="${person.name}"></span>!</h1>
 <h2>Erstelle einen Journal-Eintrag:</h2>
@@ -26,21 +26,5 @@
     </div>
     <input type="submit" value="Anlegen">
 </form>
-<p><a href="/entries">Bisherige Einträge anzeigen</a></p>
-
-
-
-<!--TEACHER zugriff auf Kurserstellen-->
-<div th:if="${person.role.name() == 'TEACHER'}">
-    <h2>Kurse verwalten</h2>
-    <a href="/courses">Kurse anzeigen</a>
-    <a href="/new-course">Kurs erstellen</a>
-
-</div>
-
-<div th:if="${person.role.name() == 'STUDENT'}">
-    <a href="/person">Eigene Kurse/Entries/Profil</a>
-</div>
-
 </body>
 </html>

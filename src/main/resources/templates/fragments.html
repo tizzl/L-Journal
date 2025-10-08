@@ -3,7 +3,7 @@
         <ul class="nav-list">
             <li class="nav-item-card">
                 <a th:href="@{/}"
-                   th:classappend="${activeParagraph == 'home'} ? ' active'"
+                   th:classappend="${activeParagraph == '/'} ? ' active'"
                 >Startseite</a>
             </li>
             <li class="nav-item-card">
@@ -12,18 +12,19 @@
                 >Einträge einsehen</a>
             </li>
             <li class="nav-item-card">
-                <a th:href="@{/person}"
-                   th:classappend="${activeParagraph == 'person' and person.id == loggedInPerson.id} ? ' active'"
+                <a th:href="@{/person/{id}(id=${loggedInPerson.id})}"
+
+                th:classappend="${activeParagraph == 'person' and person.id == loggedInPerson.id} ? ' active'"
                 >Mein Profil</a>
             </li>
             <!-- TEACHER-spezifische Menüpunkte -->
-            <li th:if="${person.role.name() == 'TEACHER'}" class="nav-item-card nav-courses">
+            <li th:if="${loggedInPerson.role.name() == 'TEACHER'}" class="nav-item-card nav-courses">
                 <a th:href="@{/courses}"
                    th:classappend="${activeParagraph == 'courses'} ? ' active'">
                     Kurse anzeigen
                 </a>
             </li>
-            <li th:if="${person.role.name() == 'TEACHER'}" class="nav-item-card nav-new-course">
+            <li th:if="${loggedInPerson.role.name() == 'TEACHER'}" class="nav-item-card nav-new-course">
                 <a th:href="@{/new-course}"
                    th:classappend="${activeParagraph == 'new-course'} ? ' active'">
                     Kurs erstellen

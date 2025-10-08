@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/css/style.css"/>
 </head>
 <body>
-<div th:replace="fragments :: nav"></div>
+<div th:replace="fragments :: common_header('courses')"></div>
 <h1>Füge Schüler hinzu, <span th:text="${person.name}"></span>!</h1>
 
 <p><strong>Kursname:</strong> <span th:text="${course.courseName}"></span></p>
@@ -52,6 +52,8 @@
 
     </tr>
 </table>
-<a href="/courses">Zurück</a>
+<a th:if="${person.role.name() == 'STUDENT'}" th:href="@{/person}">Zurück</a>
+<a th:if="${person.role.name() == 'TEACHER'}" th:href="@{/courses}">Zurück</a>
+
 </body>
 </html>

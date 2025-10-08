@@ -8,11 +8,11 @@ import com.timo.Learning_Journal.repositories.CourseRepository;
 import com.timo.Learning_Journal.service.CourseService;
 import com.timo.Learning_Journal.service.PersonService;
 import com.timo.Learning_Journal.service.SessionService;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.*;
 
 @Controller
@@ -22,7 +22,7 @@ public class CourseController {
     private final PersonService personService;
     private final SessionService sessionService;
     private final CourseService courseService;
-    private final CourseRepository courseRepository;
+
 
     @PostMapping("/new-course")
     public String createCourse(@RequestParam String courseName,
@@ -44,6 +44,7 @@ public class CourseController {
         course.setTeacher(teacher);
         courseService.save(course);
 
+
         return "redirect:/edit-course/" + course.getCourseID();
     }
 
@@ -63,6 +64,7 @@ public class CourseController {
         model.addAttribute("person", session.getPerson());
         model.addAttribute("teachers", teachers);
         model.addAttribute("students", students);
+
         return "new-course"; // Thymeleaf Template
     }
 
@@ -129,10 +131,10 @@ public class CourseController {
     }
 
     @PostMapping("/edit-course/{courseID}/remove-student/{studentId}")
-    public String removeStudentFromCourse(Model model,
-                                          @PathVariable Long courseID,
-                                          @PathVariable Long studentId,
-                                          @CookieValue(value = "session-id", defaultValue = "0") String cookieSessionID) {
+    public String removeStudentFromCourse(
+            @PathVariable Long courseID,
+            @PathVariable Long studentId,
+            @CookieValue(value = "session-id", defaultValue = "0") String cookieSessionID) {
 
         // Session prüfen
         Session session = sessionService.findById(Long.parseLong(cookieSessionID)).orElse(null);
@@ -150,8 +152,6 @@ public class CourseController {
         courseService.removeStudentFromCourse(courseID, studentId);
 
 
-
-
         // Zurück zur Kursbearbeitung
         return "redirect:/edit-course/" + courseID;
     }
@@ -167,12 +167,13 @@ public class CourseController {
         Person person = personOpt.get();
         model.addAttribute("person", person);
 
-        if (person.getRole() == Role.TEACHER){
+        if (person.getRole() == Role.TEACHER) {
             List<Course> courses = courseService.findByTeacher(person);
             model.addAttribute("courses", courses);
         }
         return "courses";
     }
+
     @GetMapping("/course/{id}")
     public String courseDetail(@PathVariable Long id, Model model) {
         Course course = courseService.findById(id)

@@ -74,7 +74,6 @@ public class EntryController {
             List<Entry> entries = entryService.findAll();
             model.addAttribute("person", session.getPerson());
             model.addAttribute("entries", entries);
-            model.addAttribute("activeParagraph", "entries");
             return "entrylist";
         }).orElse("redirect:/login");
 
