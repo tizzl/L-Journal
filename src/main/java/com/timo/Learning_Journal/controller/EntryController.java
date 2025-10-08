@@ -7,14 +7,10 @@ import com.timo.Learning_Journal.service.EntryService;
 import com.timo.Learning_Journal.service.SessionService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -30,7 +26,7 @@ public class EntryController {
     @GetMapping("/entry/{id}")
     public String viewEntry(Model model, @PathVariable Long id) {
         Entry entry = entryService.findById(id)
-                        .orElseThrow(() -> new RuntimeException("Entry not found " + id));
+                .orElseThrow(() -> new RuntimeException("Entry not found " + id));
         model.addAttribute("entry", entry);
         return "view-entry";
     }
@@ -68,22 +64,19 @@ public class EntryController {
     }
 
     @GetMapping("/entries")
-    public String viewEntries(Model model, HttpSession session) {
-        Person loggedInPerson = (Person) session.getAttribute("loggedInPerson");
+    public String viewEntries(Model model, @CookieValue(value = "session-id", defaultValue = "0") String cookieSessionID) {
 
-
-        if (loggedInPerson == null) {
-            // Optional: redirect, falls keiner eingeloggt ist
+        if ("0".equals(cookieSessionID)) {
+            //Kein cookie, keine Party, ergo -->/login
             return "redirect:/login";
         }
+        return sessionService.findById(Long.parseLong(cookieSessionID)).map(session -> {
+            List<Entry> entries = entryService.findAll();
+            model.addAttribute("person", session.getPerson());
+            model.addAttribute("entries", entries);
+            model.addAttribute("activeParagraph", "entries");
+            return "entrylist";
+        }).orElse("redirect:/login");
 
-        List<Entry> entries = entryService.findAll();
-        model.addAttribute("entries", entries);
-
-        model.addAttribute("person", loggedInPerson);
-        model.addAttribute("loggedInPerson", loggedInPerson);
-
-        model.addAttribute("activeParagraph", "entries");
-        return "entrylist";
     }
 }
